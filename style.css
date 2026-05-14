@@ -421,7 +421,7 @@ a {
    ============================================================ */
 .about {
   background: var(--bg);
-  padding: 120px 40px;
+  padding: 120px 0;
   width: 100%;
 }
 
@@ -504,7 +504,7 @@ a {
    ============================================================ */
 .contact {
   background: var(--navy);
-  padding: 120px 40px;
+  padding: 120px 0;
   border-top: 1px solid rgba(77, 163, 255, 0.08);
 }
 
@@ -691,7 +691,7 @@ a {
 
   /* About */
   .about {
-    padding: 60px 20px;
+    padding: 60px 0;
   }
 
   .cards-grid {
@@ -710,7 +710,7 @@ a {
 
   /* Contact */
   .contact {
-    padding: 60px 20px;
+    padding: 60px 0;
   }
 
   .contact-form {
