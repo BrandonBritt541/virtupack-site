@@ -424,11 +424,10 @@ a {
 }
 
 .about-closing {
-  margin-top: 2rem;
-  padding: 3rem 3.5rem;
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius);
-  background: linear-gradient(135deg, rgba(13,27,42,0.8) 0%, rgba(26,111,212,0.06) 100%);
+  padding: 80px 0;
+  background: var(--bg);
+  border-top: 1px solid rgba(77, 163, 255, 0.08);
+  border-bottom: 1px solid rgba(77, 163, 255, 0.08);
 }
 
 /* Differentiator Cards */
@@ -828,8 +827,7 @@ a {
   }
 
   .about-closing {
-    margin-bottom: 3rem;
-    padding: 2rem 1.75rem;
+    padding: 60px 0;
   }
 
   /* Contact */
