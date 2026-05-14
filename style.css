@@ -619,71 +619,44 @@ a {
 
 /* ============================================================
    SCROLL REVEAL — Intersection Observer
+   All animated elements share the same base state.
+   JS adds .is-visible via a single IntersectionObserver.
    ============================================================ */
 
-/* Reveal blocks (about sections, closing) */
-.reveal-block {
+/* Base state — text lines, cards, and form fields */
+.reveal-line,
+.reveal-card,
+.reveal-field {
   opacity: 0;
-  transform: scale(0.95) translateY(20px);
+  transform: translateY(30px) scale(0.95);
   filter: blur(4px);
   transition: opacity 400ms var(--transition),
               transform 400ms var(--transition),
               filter 400ms var(--transition);
+  will-change: opacity, transform, filter;
 }
 
-.reveal-block.is-visible {
+/* Card-specific angled entry directions */
+.reveal-card[data-card-index="0"] { transform: translateY(30px) scale(0.95) rotate(-0.5deg); }
+.reveal-card[data-card-index="1"] { transform: translateY(30px) scale(0.95); }
+.reveal-card[data-card-index="2"] { transform: translateY(30px) scale(0.95) rotate(0.5deg); }
+
+/* Revealed state */
+.reveal-line.is-visible,
+.reveal-card.is-visible,
+.reveal-field.is-visible {
   opacity: 1;
-  transform: scale(1) translateY(0);
+  transform: translateY(0) scale(1) rotate(0deg);
   filter: blur(0);
 }
 
-/* Reveal lines (text lines one-by-one) */
-.reveal-line {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 400ms var(--transition),
-              transform 400ms var(--transition);
-}
-
-.reveal-line.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Cards staggered fly-in */
+/* Cards also need hover/transition for interactivity after reveal */
 .reveal-card {
-  opacity: 0;
-  filter: blur(4px);
-  transform: scale(0.95);
   transition: opacity 400ms var(--transition),
               transform 400ms var(--transition),
               filter 400ms var(--transition),
-              /* keep the hover effects working after reveal */
               border-color 300ms var(--transition),
               box-shadow 300ms var(--transition);
-}
-
-.reveal-card[data-card-index="0"] { transform: scale(0.95) translateY(16px) rotate(-0.5deg); }
-.reveal-card[data-card-index="1"] { transform: scale(0.95) translateY(20px); }
-.reveal-card[data-card-index="2"] { transform: scale(0.95) translateY(16px) rotate(0.5deg); }
-
-.reveal-card.is-visible {
-  opacity: 1;
-  filter: blur(0);
-  transform: scale(1) translateY(0) rotate(0deg);
-}
-
-/* Contact form fields slide up */
-.reveal-field {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 400ms var(--transition),
-              transform 400ms var(--transition);
-}
-
-.reveal-field.is-visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* ============================================================
