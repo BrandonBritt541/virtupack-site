@@ -4,7 +4,7 @@
 
 'use strict';
 
-// ── Footer year ──────────────────────────────────────────────
+// ── Footer year ────────────────────────────────────────────────
 document.getElementById('footer-year').textContent = new Date().getFullYear();
 
 // ── Navbar scroll state ────────────────────────────────────────────
@@ -199,15 +199,35 @@ document.querySelectorAll('.animate').forEach(el => {
   }, { threshold: 0.2 }).observe(track);
 })();
 
-// ── Contact form — basic client-side feedback ────────────────────────
+// ── Contact form — async Netlify submission ──────────────────────────
 (function initContactForm() {
-  const form = document.getElementById('contact-form');
-  if (!form) return;
+  const form      = document.querySelector('.contact-form');
+  const submitBtn = document.getElementById('submitBtn');
+  if (!form || !submitBtn) return;
 
-  form.addEventListener('submit', (e) => {
-    const submitBtn = form.querySelector('.btn-submit');
-    if (!submitBtn) return;
-    submitBtn.textContent = 'Sending…';
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    submitBtn.textContent = 'Sending...';
     submitBtn.disabled    = true;
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch('/', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body:    new URLSearchParams(formData).toString(),
+      });
+
+      if (response.ok) {
+        submitBtn.textContent         = 'Submitted ✓';
+        submitBtn.style.background    = '#1a8a4a';
+        form.reset();
+      } else {
+        throw new Error('Form failed');
+      }
+    } catch (error) {
+      submitBtn.textContent = 'Try Again';
+      submitBtn.disabled    = false;
+    }
   });
 })();
