@@ -48,7 +48,7 @@ a {
 
 /* ---------- Typography ---------- */
 .brand-virtu {
-  color: var(--navy);
+  color: #ffffff;
   font-weight: 800;
   letter-spacing: 0.02em;
 }
@@ -57,14 +57,6 @@ a {
   color: var(--blue);
   font-weight: 800;
   letter-spacing: 0.02em;
-}
-
-/* When brand appears inside dark sections, virtu needs to be lighter */
-.hero .brand-virtu,
-.about .brand-virtu,
-.contact .brand-virtu,
-.footer .brand-virtu {
-  color: #ffffff;
 }
 
 .brand-inline {
