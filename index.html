@@ -224,18 +224,7 @@
       <h2 class="section-label contact-title animate">Get in Touch</h2>
       <p class="contact-sub animate">Tell us about your packaging challenges. We'll be in touch.</p>
 
-      <form
-        name="contact"
-        method="POST"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-        class="contact-form"
-        id="contact-form"
-        novalidate
-      >
-        <!-- Honeypot -->
-        <input name="bot-field" style="display:none" aria-hidden="true" tabindex="-1" />
-        <input type="hidden" name="form-name" value="contact" />
+      <form action="https://formspree.io/f/xwvyjryn" method="POST" id="contactForm" class="contact-form">
 
         <div class="form-field reveal-field" data-field-index="0">
           <label for="name" class="form-label">Full Name <span class="required" aria-hidden="true">*</span></label>

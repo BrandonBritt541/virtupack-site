@@ -199,9 +199,9 @@ document.querySelectorAll('.animate').forEach(el => {
   }, { threshold: 0.2 }).observe(track);
 })();
 
-// ── Contact form — async Netlify submission ──────────────────────────
+// ── Contact form — async Formspree submission ───────────────────────
 (function initContactForm() {
-  const form      = document.querySelector('.contact-form');
+  const form      = document.getElementById('contactForm');
   const submitBtn = document.getElementById('submitBtn');
   if (!form || !submitBtn) return;
 
