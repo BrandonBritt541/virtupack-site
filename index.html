@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VirtuPack — CAD-driven virtual packaging engineering. Simulate drop, vibration, and compression tests before building a single prototype." />
+  <title>VirtuPack — Design. Simulate. Validate. Ship.</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Google Analytics 4 -->
+  <!-- Replace G-XXXXXXXXXX with your GA4 Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <!-- Microsoft Clarity -->
+  <!-- Replace XXXXXXXXXX with your Clarity Project ID -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "XXXXXXXXXX");
+  </script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <header class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="#hero" class="nav-logo" aria-label="VirtuPack home">
+        <!-- LOGO: place logo.png in /assets/ -->
+        <img src="assets/logo.png" alt="VirtuPack Logo" class="logo-img" />
+        <span class="brand-name">
+          <span class="brand-virtu">VIRTU</span><span class="brand-pack">PACK</span>
+        </span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="Primary navigation">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#contact" class="nav-link nav-cta">Get in Touch</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-links">
+        <span class="ham-bar"></span>
+        <span class="ham-bar"></span>
+        <span class="ham-bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="hero">
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+    <div class="hero-glow" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <div class="hero-logo-wrap" id="hero-logo-wrap">
+        <div class="hero-logo-glow" aria-hidden="true"></div>
+        <img src="assets/logo.png" alt="VirtuPack Logo" class="hero-logo-img" id="hero-logo-img" />
+        <h1 class="hero-brand">
+          <span class="brand-virtu">VIRTU</span><span class="brand-pack">PACK</span>
+        </h1>
+      </div>
+
+      <p class="hero-tagline" id="hero-tagline" aria-label="Design. Simulate. Validate. Ship.">
+        <span class="tagline-word" data-delay="0">DESIGN.</span>
+        <span class="tagline-word" data-delay="150">SIMULATE.</span>
+        <span class="tagline-word" data-delay="300">VALIDATE.</span>
+        <span class="tagline-word" data-delay="450">SHIP.</span>
+      </p>
+
+      <a href="#contact" class="btn-primary hero-cta" id="hero-cta">Get in Touch</a>
+    </div>
+
+    <!-- UNBOX REVEAL ANIMATION WILL GO HERE -->
+    <div id="unbox-reveal" style="width:100%; height:500px;"></div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section class="about" id="about">
+    <div class="container">
+
+      <!-- Problem -->
+      <div class="about-block reveal-block">
+        <h2 class="section-label reveal-line">The Problem</h2>
+        <p class="body-text reveal-line">Traditional packaging validation is slow, expensive, and iterative in the worst way — every design change means a new physical prototype, lab test, and weeks of waiting. For manufacturers shipping complex or high-value products, this cycle eats time and budget before a single box ships.</p>
+      </div>
+
+      <!-- Solution -->
+      <div class="about-block reveal-block">
+        <h2 class="section-label reveal-line">The Solution</h2>
+        <p class="body-text reveal-line"><span class="brand-inline"><span class="brand-virtu">VIRTU</span><span class="brand-pack">PACK</span></span> is building the platform that changes that. Upload your product's CAD file, design your packaging, and run physics-based simulations — drop, vibration, compression — in minutes instead of weeks. No prototypes. No lab time. No guessing.</p>
+      </div>
+
+      <!-- Differentiator Cards -->
+      <div class="cards-grid" id="cards-grid">
+        <div class="diff-card reveal-card" data-card-index="0">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h3 class="card-title">CAD-Driven Accuracy</h3>
+          <p class="card-body">Built around real engineering data, not scans or approximations.</p>
+        </div>
+        <div class="diff-card reveal-card" data-card-index="1">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+              <path d="M7 8l3 3 5-5"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Full Pack-Out Simulation</h3>
+          <p class="card-body">Not just the box, but the complete internal packaging system.</p>
+        </div>
+        <div class="diff-card reveal-card" data-card-index="2">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+              <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+              <path d="M16 16l-4-2"/>
+            </svg>
+          </div>
+          <h3 class="card-title">Physics-Based Results</h3>
+          <p class="card-body">FEA-grade simulation that gives confidence scores, failure points, and actionable next steps.</p>
+        </div>
+      </div>
+
+      <!-- Closing CTA -->
+      <div class="about-closing reveal-block">
+        <p class="body-text reveal-line"><span class="brand-inline"><span class="brand-virtu">VIRTU</span><span class="brand-pack">PACK</span></span> is currently in active development. If you're an enterprise manufacturer or packaging engineer interested in early access, we want to hear from you.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2 class="section-label contact-title reveal-line">Get in Touch</h2>
+      <p class="contact-sub reveal-line">Tell us about your packaging challenges. We'll be in touch.</p>
+
+      <form
+        name="contact"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        class="contact-form"
+        id="contact-form"
+        novalidate
+      >
+        <!-- Honeypot -->
+        <input name="bot-field" style="display:none" aria-hidden="true" tabindex="-1" />
+        <input type="hidden" name="form-name" value="contact" />
+
+        <div class="form-field reveal-field" data-field-index="0">
+          <label for="name" class="form-label">Full Name <span class="required" aria-hidden="true">*</span></label>
+          <input type="text" id="name" name="name" class="form-input" placeholder="Jane Smith" required autocomplete="name" />
+        </div>
+
+        <div class="form-field reveal-field" data-field-index="1">
+          <label for="company" class="form-label">Company <span class="required" aria-hidden="true">*</span></label>
+          <input type="text" id="company" name="company" class="form-input" placeholder="Acme Manufacturing" required autocomplete="organization" />
+        </div>
+
+        <div class="form-field reveal-field" data-field-index="2">
+          <label for="email" class="form-label">Email Address <span class="required" aria-hidden="true">*</span></label>
+          <input type="email" id="email" name="email" class="form-input" placeholder="jane@acme.com" required autocomplete="email" />
+        </div>
+
+        <div class="form-field reveal-field" data-field-index="3">
+          <label for="role" class="form-label">Role / Title</label>
+          <input type="text" id="role" name="role" class="form-input" placeholder="Packaging Engineer" autocomplete="organization-title" />
+        </div>
+
+        <div class="form-field form-field--full reveal-field" data-field-index="4">
+          <label for="message" class="form-label">Message <span class="required" aria-hidden="true">*</span></label>
+          <textarea id="message" name="message" class="form-input form-textarea" placeholder="Tell us about your packaging validation challenges..." rows="5" required></textarea>
+        </div>
+
+        <div class="form-submit reveal-field" data-field-index="5">
+          <button type="submit" class="btn-primary btn-submit">Send Message</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="footer-brand">
+        <span class="brand-virtu">VIRTU</span><span class="brand-pack">PACK</span>
+      </span>
+      <span class="footer-copy">&copy; <span id="footer-year"></span> VirtuPack. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
