@@ -16,8 +16,8 @@
     // ── Scene ─────────────────────────────────────────────────
     const scene  = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 1, 3000);
-    camera.position.set(320, 280, 320);
-    camera.lookAt(0, 30, 0);
+    camera.position.set(300, 260, 300);
+    camera.lookAt(0, 60, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -25,21 +25,6 @@
     renderer.setClearColor(0x000000, 0);
     renderer.shadowMap.enabled = true;
     container.appendChild(renderer.domElement);
-
-    // ── Lights ────────────────────────────────────────────────
-    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-
-    const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    mainLight.position.set(150, 300, 200);
-    scene.add(mainLight);
-
-    const fillLight = new THREE.DirectionalLight(0xaaccff, 0.3);
-    fillLight.position.set(-200, 100, -100);
-    scene.add(fillLight);
-
-    const rimLight = new THREE.PointLight(0x4da3ff, 0.6, 250);
-    rimLight.position.set(-80, 120, -80);
-    scene.add(rimLight);
 
     // ── Resize ────────────────────────────────────────────────
     window.addEventListener('resize', () => {
@@ -50,40 +35,101 @@
       renderer.setSize(w, h);
     });
 
+    // ── Corrugated cardboard texture ──────────────────────────
+    function createCorrugatedTexture() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#c4935a';
+      ctx.fillRect(0, 0, 512, 512);
+
+      for (let y = 0; y < 512; y += 6) {
+        ctx.fillStyle = 'rgba(255, 220, 150, 0.25)';
+        ctx.fillRect(0, y, 512, 2);
+        ctx.fillStyle = 'rgba(80, 40, 10, 0.18)';
+        ctx.fillRect(0, y + 3, 512, 2);
+      }
+
+      for (let i = 0; i < 8000; i++) {
+        const x = Math.random() * 512;
+        const y = Math.random() * 512;
+        const alpha = Math.random() * 0.04;
+        ctx.fillStyle = `rgba(0,0,0,${alpha})`;
+        ctx.fillRect(x, y, 1, 1);
+      }
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set(3, 3);
+      return texture;
+    }
+
+    // ── Lights ────────────────────────────────────────────────
+    scene.add(new THREE.AmbientLight(0xfff5e6, 0.45));
+
+    const mainLight = new THREE.DirectionalLight(0xfff8f0, 0.9);
+    mainLight.position.set(150, 300, 200);
+    scene.add(mainLight);
+
+    const fillLight = new THREE.DirectionalLight(0xc8d8ff, 0.3);
+    fillLight.position.set(-150, 200, -100);
+    scene.add(fillLight);
+
+    const shadowLight = new THREE.DirectionalLight(0x3a2010, 0.15);
+    shadowLight.position.set(0, -100, 0);
+    scene.add(shadowLight);
+
+    // Spotlight above product: group.y=50 + product.y=100 → world y=150
+    const spotLight = new THREE.SpotLight(0xffffff, 0.4);
+    spotLight.position.set(0, 420, 0);
+    spotLight.angle = Math.PI / 8;
+    spotLight.penumbra = 0.35;
+    spotLight.target.position.set(0, 150, 0);
+    scene.add(spotLight);
+    scene.add(spotLight.target);
+
     // ── Materials ─────────────────────────────────────────────
-    const KRAFT_COLOR   = 0xc4935a;
-    const KRAFT_DARK    = 0x8b5e3c;
-    const PAPER_COLOR   = 0xc8924a;
-    const PRODUCT_COLOR = 0x2a2a2a;
-    const BLUE          = 0x4da3ff;
+    const corrTex = createCorrugatedTexture();
 
     const kraftMat = new THREE.MeshStandardMaterial({
-      color: KRAFT_COLOR, roughness: 0.85, metalness: 0.0,
-    });
-    const kraftInnerMat = new THREE.MeshStandardMaterial({
-      color: KRAFT_DARK, roughness: 0.9, metalness: 0.0,
-    });
-    const paperMat = new THREE.MeshStandardMaterial({
-      color: PAPER_COLOR, roughness: 0.95, metalness: 0.0,
-    });
-    const productMat = new THREE.MeshStandardMaterial({
-      color: PRODUCT_COLOR, roughness: 0.7, metalness: 0.2,
+      map:       corrTex,
+      color:     0xc4935a,
+      roughness: 0.9,
+      metalness: 0.0,
     });
 
+    const paperMat = new THREE.MeshStandardMaterial({
+      color:     0xc8924a,
+      roughness: 0.95,
+      metalness: 0.0,
+    });
+
+    const productMat = new THREE.MeshStandardMaterial({
+      color:     0x2a2a2a,
+      roughness: 0.7,
+      metalness: 0.2,
+    });
+
+    const BLUE = 0x4da3ff;
+
     // ── Groups ────────────────────────────────────────────────
-    const group     = new THREE.Group();
+    const group = new THREE.Group();
+    group.position.y = 50;
     scene.add(group);
 
     const solidGroup = new THREE.Group();
     group.add(solidGroup);
 
-    const wireGroup  = new THREE.Group();
+    const wireGroup = new THREE.Group();
     wireGroup.visible = false;
     group.add(wireGroup);
 
     const solidMeshes = [];
 
-    // ── Helper: box mesh ─────────────────────────────────────
+    // ── Helper: box wall mesh ─────────────────────────────────
     function addBox(geo, mat, px, py, pz, rx, ry, rz) {
       const m = new THREE.Mesh(geo, mat);
       m.position.set(px, py, pz);
@@ -95,84 +141,50 @@
 
     // ── BOX BODY ──────────────────────────────────────────────
     addBox(new THREE.BoxGeometry(200, 10, 200), kraftMat, 0, -85, 0);
-    addBox(new THREE.BoxGeometry(200, 180, 8),  kraftMat, 0, 0,  100);
-    addBox(new THREE.BoxGeometry(200, 180, 8),  kraftMat, 0, 0, -100);
+    addBox(new THREE.BoxGeometry(200, 180, 8),  kraftMat, 0, 0,   100);
+    addBox(new THREE.BoxGeometry(200, 180, 8),  kraftMat, 0, 0,  -100);
     addBox(new THREE.BoxGeometry(8,  180, 200), kraftMat, -100, 0, 0);
     addBox(new THREE.BoxGeometry(8,  180, 200), kraftMat,  100, 0, 0);
 
     // ── FLAPS ─────────────────────────────────────────────────
-    function addFlap(isLong, pivotX, pivotZ, hingeAxis, angle) {
-      const flapW = isLong ? 200 : 100;
-      const flapD = 100;
+    // Long flaps (front/back): -30° opens tips upward
+    // Short flaps (left/right): ±25° opens tips upward
+    function addFlap(geo, pivotX, pivotY, pivotZ, rx, rz, localX, localZ) {
       const pivot = new THREE.Object3D();
-      pivot.position.set(pivotX, 90, pivotZ);
+      pivot.position.set(pivotX, pivotY, pivotZ);
+      if (rx) pivot.rotation.x = rx;
+      if (rz) pivot.rotation.z = rz;
       solidGroup.add(pivot);
 
-      const geo = new THREE.BoxGeometry(flapW, 8, flapD);
-      const m   = new THREE.Mesh(geo, kraftMat);
-      m.position.set(0, 0, flapD / 2);
+      const m = new THREE.Mesh(geo, kraftMat);
+      m.position.set(localX || 0, 0, localZ || 0);
       pivot.add(m);
       solidMeshes.push(m);
-
-      if (hingeAxis === 'x')      pivot.rotation.x = angle;
-      else if (hingeAxis === 'z') pivot.rotation.z = angle;
-      else if (hingeAxis === 'y') pivot.rotation.y = angle;
-
       return pivot;
     }
 
-    addFlap(true, 0, 100, 'x', Math.PI * 45 / 180);
+    addFlap(new THREE.BoxGeometry(200, 8, 100), 0,    90,  100, -Math.PI * 30 / 180, null,  0,   50);
+    addFlap(new THREE.BoxGeometry(200, 8, 100), 0,    90, -100,  Math.PI * 30 / 180, null,  0,  -50);
+    addFlap(new THREE.BoxGeometry(100, 8, 200), -100, 90,    0,  null, -Math.PI * 25 / 180, -50,   0);
+    addFlap(new THREE.BoxGeometry(100, 8, 200),  100, 90,    0,  null,  Math.PI * 25 / 180,  50,   0);
 
-    const fp2 = new THREE.Object3D();
-    fp2.position.set(0, 90, -100);
-    fp2.rotation.x = -Math.PI * 45 / 180;
-    solidGroup.add(fp2);
-    {
-      const geo = new THREE.BoxGeometry(200, 8, 100);
-      const m   = new THREE.Mesh(geo, kraftMat);
-      m.position.set(0, 0, -50);
-      fp2.add(m);
-      solidMeshes.push(m);
-    }
-
-    const fp3 = new THREE.Object3D();
-    fp3.position.set(-100, 90, 0);
-    fp3.rotation.z = Math.PI * 35 / 180;
-    solidGroup.add(fp3);
-    {
-      const geo = new THREE.BoxGeometry(100, 8, 200);
-      const m   = new THREE.Mesh(geo, kraftMat);
-      m.position.set(-50, 0, 0);
-      fp3.add(m);
-      solidMeshes.push(m);
-    }
-
-    const fp4 = new THREE.Object3D();
-    fp4.position.set(100, 90, 0);
-    fp4.rotation.z = -Math.PI * 35 / 180;
-    solidGroup.add(fp4);
-    {
-      const geo = new THREE.BoxGeometry(100, 8, 200);
-      const m   = new THREE.Mesh(geo, kraftMat);
-      m.position.set(50, 0, 0);
-      fp4.add(m);
-      solidMeshes.push(m);
-    }
-
-    // ── KRAFT PAPER (crumpled clumps, even ring) ────────────────
+    // ── KRAFT PAPER (packed ring inside box) ──────────────────
+    // 8 clumps at radius 55; 3 tall (tips ~y=105), 5 lower (tips ~y=100)
     const paperClumps = Array.from({ length: 8 }, (_, i) => {
       const angle = (i / 8) * Math.PI * 2;
-      const r = 65;
+      const r     = 55;
+      const tall  = i < 3;
       return {
         x:  Math.cos(angle) * r,
         z:  Math.sin(angle) * r,
+        y:  tall ? 85 : 80,
         sx: 1.3 + (i % 3) * 0.1,
-        sy: 0.55 + (i % 2) * 0.15,
+        sy: tall ? 0.75 : 0.6,
         sz: 1.3 + (i % 3) * 0.1,
       };
     });
 
-    paperClumps.forEach(({ x, z, sx, sy, sz }) => {
+    paperClumps.forEach(({ x, y, z, sx, sy, sz }) => {
       const geo = new THREE.SphereGeometry(28, 6, 5);
       const pos = geo.attributes.position;
       for (let i = 0; i < pos.count; i++) {
@@ -184,17 +196,18 @@
 
       const m = new THREE.Mesh(geo, paperMat.clone());
       m.scale.set(sx, sy, sz);
-      m.position.set(x, -55 + Math.random() * 10, z);
+      m.position.set(x, y + (Math.random() - 0.5) * 6, z);
       solidGroup.add(m);
       solidMeshes.push(m);
     });
 
     // ── PRODUCT (cylinder, stays solid always) ────────────────
+    // Box opening at y=90; top 50 above = y=140; center at y=100
     const product = new THREE.Mesh(
       new THREE.CylinderGeometry(35, 35, 80, 32),
       productMat
     );
-    product.position.set(0, -10, 0);
+    product.position.set(0, 100, 0);
     group.add(product);
 
     // ── WIRE HELPER ───────────────────────────────────────────
@@ -223,8 +236,8 @@
     }
 
     addEdgeWire(new THREE.BoxGeometry(200, 10, 200), BLUE, 0.9, null, 0, -85, 0);
-    addEdgeWire(new THREE.BoxGeometry(200, 180, 8),  BLUE, 0.9, null, 0,  0,  100);
-    addEdgeWire(new THREE.BoxGeometry(200, 180, 8),  BLUE, 0.9, null, 0,  0, -100);
+    addEdgeWire(new THREE.BoxGeometry(200, 180, 8),  BLUE, 0.9, null, 0,  0,   100);
+    addEdgeWire(new THREE.BoxGeometry(200, 180, 8),  BLUE, 0.9, null, 0,  0,  -100);
     addEdgeWire(new THREE.BoxGeometry(8,  180, 200), BLUE, 0.9, null, -100, 0, 0);
     addEdgeWire(new THREE.BoxGeometry(8,  180, 200), BLUE, 0.9, null,  100, 0, 0);
 
@@ -251,24 +264,24 @@
       wireEntries.push({ ls: gls, targetOpacity: 0.15 });
     }
 
-    addFlapWire(new THREE.BoxGeometry(200, 8, 100), 0, 90,  100,  Math.PI*45/180, null, 0, 50);
-    addFlapWire(new THREE.BoxGeometry(200, 8, 100), 0, 90, -100, -Math.PI*45/180, null, 0, -50);
-    addFlapWire(new THREE.BoxGeometry(100, 8, 200), -100, 90, 0, null,  Math.PI*35/180, -50, 0);
-    addFlapWire(new THREE.BoxGeometry(100, 8, 200),  100, 90, 0, null, -Math.PI*35/180,  50, 0);
+    addFlapWire(new THREE.BoxGeometry(200, 8, 100), 0,    90,  100, -Math.PI*30/180, null,  0,   50);
+    addFlapWire(new THREE.BoxGeometry(200, 8, 100), 0,    90, -100,  Math.PI*30/180, null,  0,  -50);
+    addFlapWire(new THREE.BoxGeometry(100, 8, 200), -100, 90,    0,  null, -Math.PI*25/180, -50,   0);
+    addFlapWire(new THREE.BoxGeometry(100, 8, 200),  100, 90,    0,  null,  Math.PI*25/180,  50,   0);
 
-    paperClumps.forEach(({ x, z, sx, sy, sz }) => {
+    paperClumps.forEach(({ x, y, z, sx, sy, sz }) => {
       const eGeo = new THREE.EdgesGeometry(new THREE.SphereGeometry(28, 6, 5));
       const mat  = new THREE.LineBasicMaterial({ color: 0x6ab8ff, transparent: true, opacity: 0 });
       const ls   = new THREE.LineSegments(eGeo, mat);
       ls.scale.set(sx, sy, sz);
-      ls.position.set(x, -55, z);
+      ls.position.set(x, y, z);
       wireGroup.add(ls);
       wireEntries.push({ ls, targetOpacity: 0.5 });
 
       const gMat = new THREE.LineBasicMaterial({ color: 0x6ab8ff, transparent: true, opacity: 0 });
       const gls  = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.SphereGeometry(28, 6, 5)), gMat);
       gls.scale.set(sx * 1.05, sy * 1.05, sz * 1.05);
-      gls.position.set(x, -55, z);
+      gls.position.set(x, y, z);
       wireGroup.add(gls);
       wireEntries.push({ ls: gls, targetOpacity: 0.15 });
     });
