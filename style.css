@@ -177,12 +177,6 @@ a {
   text-decoration: none;
 }
 
-.logo-img {
-  height: 36px;
-  width: auto;
-  object-fit: contain;
-}
-
 .brand-name {
   font-size: 1.25rem;
   letter-spacing: 0.04em;
@@ -339,13 +333,6 @@ a {
   50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.12); }
 }
 
-.hero-logo-img {
-  height: 110px;
-  width: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 0 24px rgba(77, 163, 255, 0.4));
-}
-
 .hero-brand {
   font-size: clamp(5rem, 8vw, 7rem);
   letter-spacing: 0.06em;
@@ -400,7 +387,7 @@ a {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Unbox reveal placeholder */
+/* Unbox reveal */
 #unbox-reveal {
   position: relative;
   z-index: 1;
@@ -772,13 +759,14 @@ a {
     padding-bottom: 2rem;
   }
 
-  .hero-logo-img {
-    height: 80px;
-  }
-
   .hero-tagline {
     gap: 0.35em;
     letter-spacing: 0.1em;
+  }
+
+  /* Unbox animation — hide on mobile */
+  #unbox-reveal {
+    display: none;
   }
 
   /* Workflow */
@@ -853,13 +841,5 @@ a {
   .hero-tagline {
     font-size: 1.1rem;
     letter-spacing: 0.08em;
-  }
-
-  .hero-logo-img {
-    height: 64px;
-  }
-
-  #unbox-reveal {
-    height: 280px;
   }
 }
