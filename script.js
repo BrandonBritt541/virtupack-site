@@ -7,7 +7,7 @@
 // ── Footer year ──────────────────────────────────────────────
 document.getElementById('footer-year').textContent = new Date().getFullYear();
 
-// ── Navbar scroll state ──────────────────────────────────────
+// ── Navbar scroll state ────────────────────────────────────────
 (function initNavbarScroll() {
   const navbar = document.getElementById('navbar');
   const onScroll = () => {
@@ -39,7 +39,7 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
   });
 })();
 
-// ── Hero entrance animations ─────────────────────────────────
+// ── Hero entrance animations ────────────────────────────────────────
 (function initHeroAnimations() {
   const words  = document.querySelectorAll('.tagline-word');
   const cta    = document.getElementById('hero-cta');
@@ -58,7 +58,7 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
   setTimeout(() => cta.classList.add('visible'), BASE_DELAY + lastDelay + 400);
 })();
 
-// ── Particle canvas background ───────────────────────────────
+// ── Particle canvas background ────────────────────────────────────────
 (function initParticles() {
   const canvas = document.getElementById('particle-canvas');
   if (!canvas) return;
@@ -150,7 +150,7 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
   });
 })();
 
-// ── Intersection Observer — scroll reveal ────────────────────
+// ── Intersection Observer — scroll reveal ──────────────────────────────
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -165,7 +165,41 @@ document.querySelectorAll('.animate').forEach(el => {
   observer.observe(el);
 });
 
-// ── Contact form — basic client-side feedback ────────────────
+// ── Workflow line + node animation ───────────────────────────────────
+(function initWorkflow() {
+  const track = document.querySelector('.workflow-track');
+  if (!track) return;
+
+  const line  = document.getElementById('workflowLine');
+  const nodes = track.querySelectorAll('.step-node');
+  let timeouts = [];
+
+  function animateIn() {
+    line.classList.add('animate-line');
+    nodes.forEach((node, i) => {
+      timeouts.push(setTimeout(() => node.classList.add('lit'), i * 300));
+    });
+  }
+
+  function animateOut() {
+    timeouts.forEach(clearTimeout);
+    timeouts = [];
+    line.classList.remove('animate-line');
+    nodes.forEach(node => node.classList.remove('lit'));
+  }
+
+  new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateIn();
+      } else {
+        animateOut();
+      }
+    });
+  }, { threshold: 0.2 }).observe(track);
+})();
+
+// ── Contact form — basic client-side feedback ────────────────────────
 (function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
