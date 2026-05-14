@@ -16,8 +16,8 @@
     // ── Scene ─────────────────────────────────────────────────
     const scene  = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 1, 3000);
-    camera.position.set(220, 180, 280);
-    camera.lookAt(0, 20, 0);
+    camera.position.set(320, 280, 320);
+    camera.lookAt(0, 30, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -81,10 +81,9 @@
     wireGroup.visible = false;
     group.add(wireGroup);
 
-    // Track solid meshes (excluding product) for particle source + hide
     const solidMeshes = [];
 
-    // ── Helper: double-sided box mesh ─────────────────────────
+    // ── Helper: box mesh ─────────────────────────────────────
     function addBox(geo, mat, px, py, pz, rx, ry, rz) {
       const m = new THREE.Mesh(geo, mat);
       m.position.set(px, py, pz);
@@ -95,15 +94,10 @@
     }
 
     // ── BOX BODY ──────────────────────────────────────────────
-    // Bottom
     addBox(new THREE.BoxGeometry(200, 10, 200), kraftMat, 0, -85, 0);
-    // Front wall  (z+)
     addBox(new THREE.BoxGeometry(200, 180, 8),  kraftMat, 0, 0,  100);
-    // Back wall   (z-)
     addBox(new THREE.BoxGeometry(200, 180, 8),  kraftMat, 0, 0, -100);
-    // Left wall   (x-)
     addBox(new THREE.BoxGeometry(8,  180, 200), kraftMat, -100, 0, 0);
-    // Right wall  (x+)
     addBox(new THREE.BoxGeometry(8,  180, 200), kraftMat,  100, 0, 0);
 
     // ── FLAPS ─────────────────────────────────────────────────
@@ -127,11 +121,11 @@
       return pivot;
     }
 
-    addFlap(true, 0, 100, 'x', Math.PI * 50 / 180);
+    addFlap(true, 0, 100, 'x', Math.PI * 45 / 180);
 
     const fp2 = new THREE.Object3D();
     fp2.position.set(0, 90, -100);
-    fp2.rotation.x = -Math.PI * 50 / 180;
+    fp2.rotation.x = -Math.PI * 45 / 180;
     solidGroup.add(fp2);
     {
       const geo = new THREE.BoxGeometry(200, 8, 100);
@@ -143,7 +137,7 @@
 
     const fp3 = new THREE.Object3D();
     fp3.position.set(-100, 90, 0);
-    fp3.rotation.z = Math.PI * 40 / 180;
+    fp3.rotation.z = Math.PI * 35 / 180;
     solidGroup.add(fp3);
     {
       const geo = new THREE.BoxGeometry(100, 8, 200);
@@ -155,7 +149,7 @@
 
     const fp4 = new THREE.Object3D();
     fp4.position.set(100, 90, 0);
-    fp4.rotation.z = -Math.PI * 40 / 180;
+    fp4.rotation.z = -Math.PI * 35 / 180;
     solidGroup.add(fp4);
     {
       const geo = new THREE.BoxGeometry(100, 8, 200);
@@ -165,17 +159,18 @@
       solidMeshes.push(m);
     }
 
-    // ── KRAFT PAPER (crumpled clumps) ─────────────────────────
-    const paperClumps = [
-      { x: -55, z: -55, sx: 1.6, sy: 0.6, sz: 1.6 },
-      { x:  55, z: -55, sx: 1.4, sy: 0.8, sz: 1.4 },
-      { x: -55, z:  55, sx: 1.5, sy: 0.7, sz: 1.5 },
-      { x:  55, z:  55, sx: 1.6, sy: 0.6, sz: 1.6 },
-      { x:   0, z: -70, sx: 1.3, sy: 0.9, sz: 1.2 },
-      { x:   0, z:  70, sx: 1.4, sy: 0.7, sz: 1.3 },
-      { x: -70, z:   0, sx: 1.2, sy: 0.8, sz: 1.5 },
-      { x:  70, z:   0, sx: 1.3, sy: 0.9, sz: 1.4 },
-    ];
+    // ── KRAFT PAPER (crumpled clumps, even ring) ────────────────
+    const paperClumps = Array.from({ length: 8 }, (_, i) => {
+      const angle = (i / 8) * Math.PI * 2;
+      const r = 65;
+      return {
+        x:  Math.cos(angle) * r,
+        z:  Math.sin(angle) * r,
+        sx: 1.3 + (i % 3) * 0.1,
+        sy: 0.55 + (i % 2) * 0.15,
+        sz: 1.3 + (i % 3) * 0.1,
+      };
+    });
 
     paperClumps.forEach(({ x, z, sx, sy, sz }) => {
       const geo = new THREE.SphereGeometry(28, 6, 5);
@@ -189,7 +184,7 @@
 
       const m = new THREE.Mesh(geo, paperMat.clone());
       m.scale.set(sx, sy, sz);
-      m.position.set(x, -30 + Math.random() * 20, z);
+      m.position.set(x, -55 + Math.random() * 10, z);
       solidGroup.add(m);
       solidMeshes.push(m);
     });
@@ -199,7 +194,7 @@
       new THREE.CylinderGeometry(35, 35, 80, 32),
       productMat
     );
-    product.position.set(0, 15, 0);
+    product.position.set(0, -10, 0);
     group.add(product);
 
     // ── WIRE HELPER ───────────────────────────────────────────
@@ -256,24 +251,24 @@
       wireEntries.push({ ls: gls, targetOpacity: 0.15 });
     }
 
-    addFlapWire(new THREE.BoxGeometry(200, 8, 100), 0, 90,  100,  Math.PI*50/180, null, 0, 50);
-    addFlapWire(new THREE.BoxGeometry(200, 8, 100), 0, 90, -100, -Math.PI*50/180, null, 0, -50);
-    addFlapWire(new THREE.BoxGeometry(100, 8, 200), -100, 90, 0, null,  Math.PI*40/180, -50, 0);
-    addFlapWire(new THREE.BoxGeometry(100, 8, 200),  100, 90, 0, null, -Math.PI*40/180,  50, 0);
+    addFlapWire(new THREE.BoxGeometry(200, 8, 100), 0, 90,  100,  Math.PI*45/180, null, 0, 50);
+    addFlapWire(new THREE.BoxGeometry(200, 8, 100), 0, 90, -100, -Math.PI*45/180, null, 0, -50);
+    addFlapWire(new THREE.BoxGeometry(100, 8, 200), -100, 90, 0, null,  Math.PI*35/180, -50, 0);
+    addFlapWire(new THREE.BoxGeometry(100, 8, 200),  100, 90, 0, null, -Math.PI*35/180,  50, 0);
 
     paperClumps.forEach(({ x, z, sx, sy, sz }) => {
       const eGeo = new THREE.EdgesGeometry(new THREE.SphereGeometry(28, 6, 5));
       const mat  = new THREE.LineBasicMaterial({ color: 0x6ab8ff, transparent: true, opacity: 0 });
       const ls   = new THREE.LineSegments(eGeo, mat);
       ls.scale.set(sx, sy, sz);
-      ls.position.set(x, -30, z);
+      ls.position.set(x, -55, z);
       wireGroup.add(ls);
       wireEntries.push({ ls, targetOpacity: 0.5 });
 
       const gMat = new THREE.LineBasicMaterial({ color: 0x6ab8ff, transparent: true, opacity: 0 });
       const gls  = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.SphereGeometry(28, 6, 5)), gMat);
       gls.scale.set(sx * 1.05, sy * 1.05, sz * 1.05);
-      gls.position.set(x, -30, z);
+      gls.position.set(x, -55, z);
       wireGroup.add(gls);
       wireEntries.push({ ls: gls, targetOpacity: 0.15 });
     });
