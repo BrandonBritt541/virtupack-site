@@ -151,80 +151,85 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
 })();
 
 // ── Intersection Observer — scroll reveal ────────────────────
-(function initScrollReveal() {
-  // Generic reveal for .reveal-block elements
-  const blockObs = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-visible');
-          blockObs.unobserve(e.target);
-        }
-      });
-    },
-    { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-  );
+// Initialised inside DOMContentLoaded so layout is stable before
+// the observer measures element positions.
+document.addEventListener('DOMContentLoaded', function initScrollReveal() {
+  // Cards and form fields are staggered; the observer fires on the
+  // container (cards-grid / contact-form) and then staggers children.
+  // Everything else (.reveal-line) is observed directly.
 
-  document.querySelectorAll('.reveal-block').forEach(el => blockObs.observe(el));
+  const THRESHOLD = 0.15;
 
-  // Text lines reveal one-by-one within a parent block
-  const lineObs = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        const parent = e.target;
-        const lines  = parent.querySelectorAll('.reveal-line');
-        lines.forEach((line, i) => {
-          setTimeout(() => line.classList.add('is-visible'), i * 120);
+  // ── Helper: reveal a single element immediately ──────────────
+  function reveal(el) {
+    el.classList.add('is-visible');
+  }
+
+  // ── 1. Observe .reveal-line elements directly ────────────────
+  //    Text lines inside each about-block stagger 120ms apart
+  //    within their own parent group.
+  const lineObserver = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        obs.unobserve(entry.target);
+
+        // Find sibling lines in the same parent and stagger them
+        const parent = entry.target.parentElement;
+        const siblings = parent
+          ? Array.from(parent.querySelectorAll('.reveal-line'))
+          : [entry.target];
+
+        siblings.forEach((line, i) => {
+          // Stop observing siblings so they don't double-fire
+          obs.unobserve(line);
+          setTimeout(() => reveal(line), i * 120);
         });
-        lineObs.unobserve(parent);
       });
     },
-    { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
+    { threshold: THRESHOLD }
   );
 
-  // Observe immediate parents that contain .reveal-line children
-  document.querySelectorAll('.about-block, .about-closing, .contact > .container').forEach(el => {
-    lineObs.observe(el);
-  });
+  document.querySelectorAll('.reveal-line').forEach(el => lineObserver.observe(el));
 
-  // Staggered card fly-in
-  const cardObs = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        const grid  = e.target;
-        const cards = grid.querySelectorAll('.reveal-card');
-        cards.forEach((card, i) => {
-          setTimeout(() => card.classList.add('is-visible'), i * 150);
-        });
-        cardObs.unobserve(grid);
-      });
-    },
-    { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
-  );
-
+  // ── 2. Cards — observe the grid, stagger children 150ms ──────
   const cardsGrid = document.getElementById('cards-grid');
-  if (cardsGrid) cardObs.observe(cardsGrid);
-
-  // Contact form fields slide up sequentially
-  const formObs = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        const fields = e.target.querySelectorAll('.reveal-field');
-        fields.forEach((field, i) => {
-          setTimeout(() => field.classList.add('is-visible'), i * 100);
+  if (cardsGrid) {
+    const cardObserver = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          obs.unobserve(entry.target);
+          const cards = entry.target.querySelectorAll('.reveal-card');
+          cards.forEach((card, i) => {
+            setTimeout(() => reveal(card), i * 150);
+          });
         });
-        formObs.unobserve(e.target);
-      });
-    },
-    { threshold: 0.1, rootMargin: '0px 0px -20px 0px' }
-  );
+      },
+      { threshold: THRESHOLD }
+    );
+    cardObserver.observe(cardsGrid);
+  }
 
-  const form = document.getElementById('contact-form');
-  if (form) formObs.observe(form);
-})();
+  // ── 3. Form fields — observe the form, stagger children 100ms ─
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    const fieldObserver = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          obs.unobserve(entry.target);
+          const fields = entry.target.querySelectorAll('.reveal-field');
+          fields.forEach((field, i) => {
+            setTimeout(() => reveal(field), i * 100);
+          });
+        });
+      },
+      { threshold: THRESHOLD }
+    );
+    fieldObserver.observe(contactForm);
+  }
+});
 
 // ── Contact form — basic client-side feedback ────────────────
 (function initContactForm() {

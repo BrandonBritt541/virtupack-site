@@ -72,26 +72,26 @@ a {
 }
 
 .section-label {
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
   font-weight: 700;
   color: var(--text);
-  letter-spacing: -0.01em;
-  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
 }
 
 .body-text {
-  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
   color: var(--text-muted);
-  line-height: 1.8;
-  max-width: 68ch;
+  line-height: 1.85;
+  max-width: 800px;
 }
 
 /* ---------- Layout ---------- */
 .container {
   width: 100%;
-  max-width: 1120px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 2.5rem;
 }
 
 /* ---------- Buttons ---------- */
@@ -168,9 +168,9 @@ a {
 }
 
 .navbar-inner {
-  max-width: 1120px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 2.5rem;
   height: 68px;
   display: flex;
   align-items: center;
@@ -320,8 +320,8 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 2.5rem;
+  gap: 1rem;
+  margin-bottom: 3rem;
   opacity: 0;
   transform: translateY(16px);
   animation: heroLogoIn 700ms var(--transition) 200ms forwards;
@@ -332,8 +332,8 @@ a {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 220px;
-  height: 220px;
+  width: 340px;
+  height: 340px;
   background: radial-gradient(circle, rgba(77, 163, 255, 0.18) 0%, transparent 70%);
   border-radius: 50%;
   animation: logoPulse 3.5s ease-in-out infinite;
@@ -347,21 +347,21 @@ a {
 }
 
 .hero-logo-img {
-  height: 90px;
+  height: 110px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 0 18px rgba(77, 163, 255, 0.35));
+  filter: drop-shadow(0 0 24px rgba(77, 163, 255, 0.4));
 }
 
 .hero-brand {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(5rem, 8vw, 7rem);
   letter-spacing: 0.06em;
   line-height: 1;
 }
 
 /* Tagline word-by-word animation */
 .hero-tagline {
-  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  font-size: clamp(1.375rem, 2.5vw, 2rem);
   font-weight: 700;
   letter-spacing: 0.2em;
   color: var(--text);
@@ -369,7 +369,7 @@ a {
   gap: 0.6em;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
 }
 
 .tagline-word {
@@ -391,7 +391,8 @@ a {
 .hero-cta {
   opacity: 0;
   transform: translateY(10px);
-  font-size: 1rem;
+  font-size: 1.1rem;
+  padding: 1rem 2.75rem;
 }
 
 .hero-cta.visible {
@@ -420,16 +421,16 @@ a {
    ============================================================ */
 .about {
   background: var(--bg);
-  padding: 7rem 0;
+  padding: 7.5rem 0;
 }
 
 .about-block {
-  margin-bottom: 4.5rem;
+  margin-bottom: 6rem;
 }
 
 .about-closing {
   margin-top: 2rem;
-  padding: 2.5rem;
+  padding: 3rem 3.5rem;
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
   background: linear-gradient(135deg, rgba(13,27,42,0.8) 0%, rgba(26,111,212,0.06) 100%);
@@ -439,15 +440,15 @@ a {
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin: 1rem 0 4rem;
+  gap: 2rem;
+  margin: 1.5rem 0 5rem;
 }
 
 .diff-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
-  padding: 2rem 1.75rem;
+  padding: 2.75rem 2.25rem;
   position: relative;
   overflow: hidden;
   transition: border-color 300ms var(--transition),
@@ -471,29 +472,29 @@ a {
 }
 
 .card-icon {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   background: rgba(77, 163, 255, 0.1);
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
   color: var(--accent);
 }
 
 .card-title {
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 0.6rem;
-  letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
 }
 
 .card-body {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--text-muted);
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 /* ============================================================
@@ -501,7 +502,7 @@ a {
    ============================================================ */
 .contact {
   background: var(--navy);
-  padding: 7rem 0;
+  padding: 7.5rem 0;
   border-top: 1px solid rgba(77, 163, 255, 0.08);
 }
 
@@ -619,71 +620,44 @@ a {
 
 /* ============================================================
    SCROLL REVEAL — Intersection Observer
+   All animated elements share the same base state.
+   JS adds .is-visible via a single IntersectionObserver.
    ============================================================ */
 
-/* Reveal blocks (about sections, closing) */
-.reveal-block {
+/* Base state — text lines, cards, and form fields */
+.reveal-line,
+.reveal-card,
+.reveal-field {
   opacity: 0;
-  transform: scale(0.95) translateY(20px);
+  transform: translateY(30px) scale(0.95);
   filter: blur(4px);
   transition: opacity 400ms var(--transition),
               transform 400ms var(--transition),
               filter 400ms var(--transition);
+  will-change: opacity, transform, filter;
 }
 
-.reveal-block.is-visible {
+/* Card-specific angled entry directions */
+.reveal-card[data-card-index="0"] { transform: translateY(30px) scale(0.95) rotate(-0.5deg); }
+.reveal-card[data-card-index="1"] { transform: translateY(30px) scale(0.95); }
+.reveal-card[data-card-index="2"] { transform: translateY(30px) scale(0.95) rotate(0.5deg); }
+
+/* Revealed state */
+.reveal-line.is-visible,
+.reveal-card.is-visible,
+.reveal-field.is-visible {
   opacity: 1;
-  transform: scale(1) translateY(0);
+  transform: translateY(0) scale(1) rotate(0deg);
   filter: blur(0);
 }
 
-/* Reveal lines (text lines one-by-one) */
-.reveal-line {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 400ms var(--transition),
-              transform 400ms var(--transition);
-}
-
-.reveal-line.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Cards staggered fly-in */
+/* Cards also need hover/transition for interactivity after reveal */
 .reveal-card {
-  opacity: 0;
-  filter: blur(4px);
-  transform: scale(0.95);
   transition: opacity 400ms var(--transition),
               transform 400ms var(--transition),
               filter 400ms var(--transition),
-              /* keep the hover effects working after reveal */
               border-color 300ms var(--transition),
               box-shadow 300ms var(--transition);
-}
-
-.reveal-card[data-card-index="0"] { transform: scale(0.95) translateY(16px) rotate(-0.5deg); }
-.reveal-card[data-card-index="1"] { transform: scale(0.95) translateY(20px); }
-.reveal-card[data-card-index="2"] { transform: scale(0.95) translateY(16px) rotate(0.5deg); }
-
-.reveal-card.is-visible {
-  opacity: 1;
-  filter: blur(0);
-  transform: scale(1) translateY(0) rotate(0deg);
-}
-
-/* Contact form fields slide up */
-.reveal-field {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 400ms var(--transition),
-              transform 400ms var(--transition);
-}
-
-.reveal-field.is-visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* ============================================================
@@ -732,32 +706,36 @@ a {
   }
 
   .hero-logo-img {
-    height: 68px;
+    height: 80px;
   }
 
   .hero-tagline {
-    gap: 0.4em;
-    letter-spacing: 0.12em;
+    gap: 0.35em;
+    letter-spacing: 0.1em;
   }
 
   /* About */
   .about {
-    padding: 4.5rem 0;
+    padding: 5rem 0;
   }
 
   .cards-grid {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 1.5rem;
   }
 
-  .about-block,
+  .about-block {
+    margin-bottom: 4rem;
+  }
+
   .about-closing {
     margin-bottom: 3rem;
+    padding: 2rem 1.75rem;
   }
 
   /* Contact */
   .contact {
-    padding: 4.5rem 0;
+    padding: 5rem 0;
   }
 
   .contact-form {
@@ -777,12 +755,16 @@ a {
 
 @media (max-width: 480px) {
   .hero-brand {
-    font-size: 1.8rem;
+    font-size: 3rem;
   }
 
   .hero-tagline {
-    font-size: 1rem;
+    font-size: 1.1rem;
     letter-spacing: 0.08em;
+  }
+
+  .hero-logo-img {
+    height: 64px;
   }
 
   #unbox-reveal {

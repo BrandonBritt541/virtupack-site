@@ -31,7 +31,7 @@ assets/logo.png
 
 The logo is referenced in two places in `index.html`:
 - The sticky navbar (36px tall)
-- The hero section (90px tall)
+- The hero section (110px tall)
 
 The logo will also receive a faint blue glow in the hero via CSS `drop-shadow`.
 
