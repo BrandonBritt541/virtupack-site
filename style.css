@@ -84,6 +84,7 @@ a {
   color: var(--text-muted);
   line-height: 1.85;
   max-width: 800px;
+  margin: 0 auto;
 }
 
 /* ---------- Layout ---------- */
@@ -426,6 +427,7 @@ a {
 }
 
 .about-block {
+  text-align: center;
   margin-bottom: 6rem;
 }
 
