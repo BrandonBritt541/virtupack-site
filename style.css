@@ -48,7 +48,7 @@ a {
 
 /* ---------- Typography ---------- */
 .brand-virtu {
-  color: var(--navy);
+  color: #ffffff;
   font-weight: 800;
   letter-spacing: 0.02em;
 }
@@ -57,14 +57,6 @@ a {
   color: var(--blue);
   font-weight: 800;
   letter-spacing: 0.02em;
-}
-
-/* When brand appears inside dark sections, virtu needs to be lighter */
-.hero .brand-virtu,
-.about .brand-virtu,
-.contact .brand-virtu,
-.footer .brand-virtu {
-  color: #c8d8ea;
 }
 
 .brand-inline {
@@ -84,6 +76,7 @@ a {
   color: var(--text-muted);
   line-height: 1.85;
   max-width: 800px;
+  margin: 0 auto;
 }
 
 /* ---------- Layout ---------- */
@@ -91,7 +84,7 @@ a {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2.5rem;
+  padding: 0 40px;
 }
 
 /* ---------- Buttons ---------- */
@@ -170,7 +163,7 @@ a {
 .navbar-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2.5rem;
+  padding: 0 40px;
   height: 68px;
   display: flex;
   align-items: center;
@@ -421,19 +414,20 @@ a {
    ============================================================ */
 .about {
   background: var(--bg);
-  padding: 7.5rem 0;
+  padding: 120px 0;
+  width: 100%;
 }
 
 .about-block {
+  text-align: center;
   margin-bottom: 6rem;
 }
 
 .about-closing {
-  margin-top: 2rem;
-  padding: 3rem 3.5rem;
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius);
-  background: linear-gradient(135deg, rgba(13,27,42,0.8) 0%, rgba(26,111,212,0.06) 100%);
+  padding: 80px 0;
+  background: var(--bg);
+  border-top: 1px solid rgba(77, 163, 255, 0.08);
+  border-bottom: 1px solid rgba(77, 163, 255, 0.08);
 }
 
 /* Differentiator Cards */
@@ -441,6 +435,7 @@ a {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+  width: 100%;
   margin: 1.5rem 0 5rem;
 }
 
@@ -498,11 +493,110 @@ a {
 }
 
 /* ============================================================
+   WORKFLOW
+   ============================================================ */
+.workflow {
+  padding: 120px 0;
+  background: var(--bg);
+  border-top: 1px solid rgba(77, 163, 255, 0.08);
+}
+
+.workflow-title {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.workflow-track {
+  position: relative;
+  width: 100%;
+}
+
+.workflow-line {
+  position: absolute;
+  top: 32px;
+  left: 8%;
+  right: 8%;
+  height: 2px;
+  background: rgba(77, 163, 255, 0.15);
+  z-index: 0;
+}
+
+.workflow-line-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #1a6fd4, #4da3ff);
+  box-shadow: 0 0 12px rgba(77, 163, 255, 0.6),
+              0 0 24px rgba(77, 163, 255, 0.3);
+  transition: width 1.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.workflow-line-fill.animate-line {
+  width: 100%;
+}
+
+.workflow-steps {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.workflow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.step-node {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--navy);
+  border: 2px solid rgba(77, 163, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  position: relative;
+  transition: border-color 400ms ease,
+              box-shadow 400ms ease;
+}
+
+.step-node.lit {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(77, 163, 255, 0.5),
+              0 0 40px rgba(77, 163, 255, 0.2);
+}
+
+.step-number {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.step-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.step-body {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ============================================================
    CONTACT
    ============================================================ */
 .contact {
   background: var(--navy);
-  padding: 7.5rem 0;
+  padding: 120px 0;
   border-top: 1px solid rgba(77, 163, 255, 0.08);
 }
 
@@ -620,44 +714,17 @@ a {
 
 /* ============================================================
    SCROLL REVEAL — Intersection Observer
-   All animated elements share the same base state.
-   JS adds .is-visible via a single IntersectionObserver.
    ============================================================ */
 
-/* Base state — text lines, cards, and form fields */
-.reveal-line,
-.reveal-card,
-.reveal-field {
+.animate {
   opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  filter: blur(4px);
-  transition: opacity 400ms var(--transition),
-              transform 400ms var(--transition),
-              filter 400ms var(--transition);
-  will-change: opacity, transform, filter;
+  transform: translateY(40px) scale(0.97);
+  transition: opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+              transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
-
-/* Card-specific angled entry directions */
-.reveal-card[data-card-index="0"] { transform: translateY(30px) scale(0.95) rotate(-0.5deg); }
-.reveal-card[data-card-index="1"] { transform: translateY(30px) scale(0.95); }
-.reveal-card[data-card-index="2"] { transform: translateY(30px) scale(0.95) rotate(0.5deg); }
-
-/* Revealed state */
-.reveal-line.is-visible,
-.reveal-card.is-visible,
-.reveal-field.is-visible {
+.animate.visible {
   opacity: 1;
-  transform: translateY(0) scale(1) rotate(0deg);
-  filter: blur(0);
-}
-
-/* Cards also need hover/transition for interactivity after reveal */
-.reveal-card {
-  transition: opacity 400ms var(--transition),
-              transform 400ms var(--transition),
-              filter 400ms var(--transition),
-              border-color 300ms var(--transition),
-              box-shadow 300ms var(--transition);
+  transform: translateY(0) scale(1);
 }
 
 /* ============================================================
@@ -714,9 +781,35 @@ a {
     letter-spacing: 0.1em;
   }
 
+  /* Workflow */
+  .workflow {
+    padding: 60px 0;
+  }
+
+  .workflow-steps {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .workflow-line {
+    display: none;
+  }
+
+  .workflow-step {
+    flex-direction: row;
+    text-align: left;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .step-node {
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+
   /* About */
   .about {
-    padding: 5rem 0;
+    padding: 60px 0;
   }
 
   .cards-grid {
@@ -729,13 +822,12 @@ a {
   }
 
   .about-closing {
-    margin-bottom: 3rem;
-    padding: 2rem 1.75rem;
+    padding: 60px 0;
   }
 
   /* Contact */
   .contact {
-    padding: 5rem 0;
+    padding: 60px 0;
   }
 
   .contact-form {
