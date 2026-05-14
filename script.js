@@ -7,7 +7,7 @@
 // ── Footer year ──────────────────────────────────────────────
 document.getElementById('footer-year').textContent = new Date().getFullYear();
 
-// ── Navbar scroll state ────────────────────────────────────────
+// ── Navbar scroll state ────────────────────────────────────────────
 (function initNavbarScroll() {
   const navbar = document.getElementById('navbar');
   const onScroll = () => {
@@ -39,7 +39,7 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
   });
 })();
 
-// ── Hero entrance animations ────────────────────────────────────────
+// ── Hero entrance animations ──────────────────────────────────────────
 (function initHeroAnimations() {
   const words  = document.querySelectorAll('.tagline-word');
   const cta    = document.getElementById('hero-cta');
@@ -58,7 +58,7 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
   setTimeout(() => cta.classList.add('visible'), BASE_DELAY + lastDelay + 400);
 })();
 
-// ── Particle canvas background ────────────────────────────────────────
+// ── Particle canvas background ──────────────────────────────────────────
 (function initParticles() {
   const canvas = document.getElementById('particle-canvas');
   if (!canvas) return;
@@ -150,7 +150,7 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
   });
 })();
 
-// ── Intersection Observer — scroll reveal ──────────────────────────────
+// ── Intersection Observer — scroll reveal ──────────────────────────
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
