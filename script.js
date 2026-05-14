@@ -200,34 +200,34 @@ document.querySelectorAll('.animate').forEach(el => {
 })();
 
 // ── Contact form — async Formspree submission ───────────────────────
-(function initContactForm() {
-  const form      = document.getElementById('contactForm');
-  const submitBtn = document.getElementById('submitBtn');
-  if (!form || !submitBtn) return;
+const form      = document.getElementById('contactForm');
+const submitBtn = document.getElementById('submitBtn');
 
+if (form) {
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled    = true;
 
+    const formData = new FormData(form);
+
     try {
-      const formData = new FormData(form);
-      const response = await fetch('/', {
+      const response = await fetch('https://formspree.io/f/xwvyjryn', {
         method:  'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body:    new URLSearchParams(formData).toString(),
+        body:    formData,
+        headers: { 'Accept': 'application/json' },
       });
 
       if (response.ok) {
-        submitBtn.textContent         = 'Submitted ✓';
-        submitBtn.style.background    = '#1a8a4a';
+        submitBtn.textContent      = 'Submitted ✓';
+        submitBtn.style.background = '#1a8a4a';
         form.reset();
       } else {
-        throw new Error('Form failed');
+        throw new Error('Failed');
       }
     } catch (error) {
       submitBtn.textContent = 'Try Again';
       submitBtn.disabled    = false;
     }
   });
-})();
+}
